@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/">
+        <file>floor.jpg</file>
+        <file>main.frag</file>
+        <file>main.vert</file>
+        <file>distanceField.frag</file>
+    </qresource>
+</RCC>

@@ -1,0 +1,6 @@
+*.o
+moc_*
+qrc_*
+Makefile
+*.pro.user
+cmc-ray
