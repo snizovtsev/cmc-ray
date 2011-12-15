@@ -4,5 +4,6 @@
         <file>main.vert</file>
         <file>fog.frag</file>
         <file>scene.frag</file>
+        <file>colormodel.frag</file>
     </qresource>
 </RCC>

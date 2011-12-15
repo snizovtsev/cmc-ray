@@ -1,4 +1,7 @@
 #version 120
+
+#define LIGHT %1
+
 //
 // Uniforms
 //
@@ -22,7 +25,7 @@ const int       noneObject      = -2;
 //
 
 float distanceAt(vec3 p, out int object);
-vec3 colorAt(vec3 point, vec3 view, int object);
+vec3 colorAt(int object, vec3 point, vec3 normal, vec3 view, vec3 light);
 vec3 applyFog(vec3 color, vec3 distance);
 
 //
@@ -72,5 +75,6 @@ void main(void)
     vec3 dir = normalize(mat3(matrix) * vec3(aspectRatio * pixel.x, pixel.y, -1));
 
     int object = trace(origin, dir, 150);
-    gl_FragColor = applyFog(vec4(colorAt(origin, dir, object), 1.0), length(origin - eyePos));
+    gl_FragColor = vec4(colorAt(object, origin, normalAt(origin), -dir, LIGHT - origin), 1.0);
+    gl_FragColor = applyFog(gl_FragColor, length(eyePos - origin));
 }

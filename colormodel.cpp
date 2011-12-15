@@ -1,7 +1,20 @@
 #include "colormodel.h"
 #include "shadercode.h"
 
-// TODO: документировать ShaderCode как "Shader Value with type X"
+#define COLORCALL "vec3 point, vec3 normal, vec3 view, vec3 light"
+
+ColorModel::ColorModel()
+    : ShaderGenerator(":/colormodel.frag")
+{ }
+
+void ColorModel::makeShaders(QGLShaderProgram *program)
+{
+    static bool registerLibrary = true;
+    if (registerLibrary) {
+        program->addShaderFromSourceCode(QGLShader::Fragment, shader);
+        registerLibrary = false;
+    }
+}
 
 class LambertModel: public ColorModel
 {
@@ -25,9 +38,13 @@ public:
         writer->leaveObject();
     }
 
-    void makeShaders(QGLShaderProgram *program)
-    {
-
+    void makeShaders(const QString& itemName, QGLShaderProgram *program) {
+        ColorModel::makeShaders(program);
+        const char* shader = "vec3 lambert(vec3 normal, vec3 light, vec3 color);"
+                             "vec3 %1_diffuse(" COLORCALL ")"
+                             "{ return lambert(normal, light, %2); }";
+        program->addShaderFromSourceCode(QGLShader::Fragment,
+                                         QString(shader).arg(itemName, *color));
     }
 };
 
@@ -69,9 +86,13 @@ public:
         writer->leaveObject();
     }
 
-    void makeShaders(QGLShaderProgram *program)
-    {
-
+    void makeShaders(const QString& itemName, QGLShaderProgram *program) {
+        ColorModel::makeShaders(program);
+        const char* shader = "vec3 phong(vec3 normal, vec3 view, vec3 color, float shininness);"
+                             "vec3 %1_specular(" COLORCALL ")"
+                             "{ return phong(normal, view, %2, %3); }";
+        program->addShaderFromSourceCode(QGLShader::Fragment,
+                                         QString(shader).arg(itemName, *color, *shininess));
     }
 };
 
