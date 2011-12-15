@@ -1,10 +1,9 @@
 #include "widget.h"
 
-#include <QDebug>
-
 Widget::Widget(QGLWidget *parent)
     : QGLWidget(QGLFormat(QGL::NoDepthBuffer | QGL::NoStencilBuffer | QGL::SampleBuffers), parent),
       program(0),
+      //reader("scene.xml"), scene(reader),
       xRot(0), yRot(0), zRot(0),
       xVel(0), yVel(0), zVel(0),
       zoom(1)
@@ -22,10 +21,8 @@ void Widget::initializeGL()
     program = new QGLShaderProgram(context(), this);
     qDebug() << "Compiling vertex shader...";
     program->addShaderFromSourceFile(QGLShader::Vertex, ":/main.vert");
-    qDebug() << "Compiling distanceField.frag...";
-    program->addShaderFromSourceFile(QGLShader::Fragment, ":/distanceField.frag");
-    qDebug() << "Compiling main.frag...";
-    program->addShaderFromSourceFile(QGLShader::Fragment, ":/main.frag");
+    qDebug() << "Compiling fragment shaders...";
+    //scene.makeShaders(program);
     qDebug() << "Linking...";
     program->link();
     program->bind();
@@ -49,14 +46,6 @@ void Widget::initializeGL()
                  GL_UNSIGNED_BYTE,
                  texture.bits());
     program->setUniformValue("floorTex", 0);
-
-    GLfloat lightpos0[] = {10, 10, 3, 0.0};
-    glLightfv(GL_LIGHT0, GL_POSITION, lightpos0);
-    GLfloat lightpos1[] = {0, 3, -10, 0.0};
-    glLightfv(GL_LIGHT1, GL_POSITION, lightpos1);
-    GLfloat fogColor[] = {1, 1, 1, 0.0};
-    glFogfv(GL_FOG_COLOR, fogColor);
-    glFogf(GL_FOG_DENSITY, .017);
 }
 
 void Widget::paintGL()

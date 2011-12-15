@@ -4,31 +4,33 @@
 #
 #-------------------------------------------------
 
-QT       += core gui opengl
+QT += core gui opengl
 
 TARGET = cmc-ray
 TEMPLATE = app
 
-
 SOURCES += main.cpp\
-        widget.cpp
+    widget.cpp \
+    scene.cpp \
+    shadercode.cpp \
+    material.cpp \
+    item.cpp \
+    fog.cpp \
+    colormodel.cpp
 
-HEADERS  += widget.h
+HEADERS  += widget.h \
+    scene.h \
+    interfaces.h \
+    shadercode.h \
+    material.h \
+    colormodel.h \
+    item.h \
+    fog.h
 
-OTHER_FILES += \
-    main.frag \
+OTHER_FILES += scene.xml \
     main.vert \
-    pastebin.txt \
-    distanceField.frag
+    fog.frag \
+    scene.frag
 
 RESOURCES += \
     resources.qrc
-
-
-
-
-
-
-
-
-

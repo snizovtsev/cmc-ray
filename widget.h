@@ -1,8 +1,10 @@
 #ifndef WIDGET_H
 #define WIDGET_H
 
+#include <QtCore>
 #include <QtOpenGL>
-#include <QTime>
+
+#include "scene.h"
 
 class Widget : public QGLWidget
 {
@@ -22,7 +24,10 @@ protected:
     void timerEvent(QTimerEvent *event);
 
 private:
-    QGLShaderProgram *  program;
+    QGLShaderProgram *program;
+    //XMLReader         reader;
+    //Scene             scene;
+
     GLfloat xRot, yRot, zRot;
     GLfloat xVel, yVel, zVel;
     GLfloat zoom;
