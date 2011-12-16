@@ -5,7 +5,7 @@ const QString objectName = "item";
 Item::Item(Reader *reader)
     : Serializable(objectName, reader)
 {
-    name = reader->attrib("name");
+    m_name = reader->attrib("name");
 
     while (reader->hasChild()) {
         if (reader->child() == "code")
@@ -16,7 +16,7 @@ Item::Item(Reader *reader)
             softShadows = new ShaderCode(reader);
         else if (reader->child() == "material") {
             reader->handleObject();
-            material = reader->text();
+            m_material = reader->text();
             endReading(reader);
         } else {
             throw SerializeException("Unexpected element: " + reader->child());
@@ -35,7 +35,7 @@ Item::~Item()
 
 void Item::serialize(Writer *writer) const
 {
-    writer->pushAttribute("name", name);
+    writer->pushAttribute("name", m_name);
     writer->enterObject(objectName);
 
     code->serialize(writer);
@@ -43,7 +43,7 @@ void Item::serialize(Writer *writer) const
     softShadows->serialize(writer);
 
     writer->enterObject("material");
-    writer->writeText(material);
+    writer->writeText(m_material);
     writer->leaveObject();
 
     writer->leaveObject();

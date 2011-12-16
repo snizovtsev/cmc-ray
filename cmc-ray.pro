@@ -30,7 +30,8 @@ HEADERS  += widget.h \
 OTHER_FILES += scene.xml \
     main.vert \
     fog.frag \
-    scene.frag
+    scene.frag \
+    colormodel.frag
 
 RESOURCES += \
     resources.qrc

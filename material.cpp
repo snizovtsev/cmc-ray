@@ -34,6 +34,7 @@ Material::~Material()
 
 void Material::serialize(Writer *writer) const
 {
+    writer->pushAttribute("name", name());
     writer->pushAttribute("dynamic", dynamic ? "true" : "false");
     writer->enterObject(objectName);
     diffuse->serialize(writer);
