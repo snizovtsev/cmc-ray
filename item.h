@@ -15,7 +15,7 @@ public:
     explicit Item(Reader* reader);
     ~Item();
 
-    QString entryPoint() const { return m_name; }
+    QString name()     const { return m_name; }
     QString material() const { return m_material; }
 
     void serialize(Writer *writer) const;

@@ -80,15 +80,16 @@ void Scene::makeShaders(QGLShaderProgram *program)
             "float distanceAt(vec3 p, out int object) {\n"
             "   float cur, best = 1e10;\n";
     QString colorAt =
-            "vec3 colorAt(int object, vec3 point, vec3 normal, vec3 view, vec3 light) {";
+            "vec3 colorAt(int object," COLORSPEC ") {\n";
 
     int object = 1;
     foreach (Item* item,  items) {
-        imports += QString("float %1(vec3 p);\n").arg(item->entryPoint());
+        item->makeShaders(program);
+        imports += QString("float %1(vec3 p);\n").arg(item->name());
         distanceAt += QString("  if ((cur = %1(p)) < best) { best = cur; object = %2; }\n")
-                .arg(item->entryPoint()).arg(object);
-        colorAt += QString("  if (object == %1) { return %2_colorAt(point, normal, view, light); }\n")
-                .arg(object).arg(item->material());
+                .arg(item->name()).arg(object);
+        colorAt += QString("  if (object == %1) { return %2_colorAt(" COLORCALL "); }\n")
+                .arg(object).arg(item->name());
         ++object;
     }
     distanceAt += "}\n";

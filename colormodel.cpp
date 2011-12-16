@@ -1,8 +1,6 @@
 #include "colormodel.h"
 #include "shadercode.h"
 
-#define COLORCALL "vec3 point, vec3 normal, vec3 view, vec3 light"
-
 ColorModel::ColorModel()
     : ShaderGenerator(":/colormodel.frag")
 { }
@@ -41,7 +39,7 @@ public:
     void makeShaders(const QString& itemName, QGLShaderProgram *program) {
         ColorModel::makeShaders(program);
         const char* shader = "vec3 lambert(vec3 normal, vec3 light, vec3 color);"
-                             "vec3 %1_diffuse(" COLORCALL ")"
+                             "vec3 %1_diffuse(" COLORSPEC ")"
                              "{ return lambert(normal, light, %2); }";
         program->addShaderFromSourceCode(QGLShader::Fragment,
                                          QString(shader).arg(itemName, *color));
@@ -89,7 +87,7 @@ public:
     void makeShaders(const QString& itemName, QGLShaderProgram *program) {
         ColorModel::makeShaders(program);
         const char* shader = "vec3 phong(vec3 normal, vec3 view, vec3 color, float shininness);"
-                             "vec3 %1_specular(" COLORCALL ")"
+                             "vec3 %1_specular(" COLORSPEC ")"
                              "{ return phong(normal, view, %2, %3); }";
         program->addShaderFromSourceCode(QGLShader::Fragment,
                                          QString(shader).arg(itemName, *color, *shininess));

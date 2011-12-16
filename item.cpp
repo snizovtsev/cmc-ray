@@ -51,4 +51,13 @@ void Item::serialize(Writer *writer) const
 
 void Item::makeShaders(QGLShaderProgram *program)
 {
+    program->addShaderFromSourceCode(QGLShader::Fragment, *code);
+
+    QString shader = QString("vec3 mat_%1_colorAt(" COLORSPEC ");\n").arg(material());
+
+    shader += "vec3 %1_colorAt(" COLORSPEC ") {\n"
+            "   return mat_%2_colorAt(" COLORCALL ");\n"
+            "}\n";
+
+    program->addShaderFromSourceCode(QGLShader::Fragment, shader);
 }

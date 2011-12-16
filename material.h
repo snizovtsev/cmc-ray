@@ -10,7 +10,6 @@ class Material : public ShaderGenerator, public Serializable
 {
     ColorModel* diffuse;
     ColorModel* specular;
-    bool        dynamic;
     QString     m_name;
 
 public:
