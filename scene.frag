@@ -1,6 +1,7 @@
 #version 120
 
 #define LIGHT %1
+#define EYE %2
 
 //
 // Uniforms
@@ -70,7 +71,7 @@ int trace(inout vec3 origin, in vec3 dir, int maxIterations)
 
 void main(void)
 {
-    vec3 eyePos = mat3(matrix) * vec3(0, 5, 12);
+    vec3 eyePos = mat3(matrix) * EYE;
     vec3 origin = eyePos;
     vec3 dir = normalize(mat3(matrix) * vec3(aspectRatio * pixel.x, pixel.y, -1));
 

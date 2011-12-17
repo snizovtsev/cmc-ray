@@ -100,5 +100,5 @@ void Scene::makeShaders(const ShaderEmitter &emitter)
     colorAt += "  return vec3(0);\n}\n";
 
     emitter(imports + distanceAt + colorAt);
-    emitter(shader.arg(*light));
+    emitter(shader.arg(*light, *eye));
 }
