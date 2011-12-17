@@ -48,9 +48,11 @@ void Material::makeShaders(const ShaderEmitter &emitter)
     diffuse->makeShaders(name(), emitter);
     specular->makeShaders(name(), emitter);
 
-    QString colorAt = QString("vec3 mat_%1_colorAt(" COLORSPEC ") {\n"
-                              "  return %1_diffuse(" COLORCALL ") +"
+    QString colorAt = QString("vec3 %1_diffuse(" COLORSPEC ");\n"
+                              "vec3 %1_specular(" COLORSPEC ");\n"
+                              "vec3 mat_%1_colorAt(" COLORSPEC ") {\n"
+                              "  return %1_diffuse(" COLORCALL ") +\n"
                               "    %1_specular(" COLORCALL ");"
-                              ).arg(name());
+                              "}\n").arg(name());
     emitter(colorAt);
 }

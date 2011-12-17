@@ -60,5 +60,5 @@ void Item::makeShaders(const ShaderEmitter &emitter)
             "   return mat_%2_colorAt(" COLORCALL ");\n"
             "}\n";
 
-    emitter(shader);
+    emitter(shader.arg(name(), material()));
 }

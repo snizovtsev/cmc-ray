@@ -89,13 +89,14 @@ void Scene::makeShaders(const ShaderEmitter &emitter)
     foreach (Item* item,  items) {
         item->makeShaders(emitter);
         imports += QString("float %1(vec3 p);\n").arg(item->name());
-        distanceAt += QString("  if ((cur = %1(p)) < best) { best = cur; object = %2; }\n")
+        imports += QString("vec3 %1_colorAt(" COLORSPEC ");\n").arg(item->name());
+        distanceAt += QString("  cur = %1(p); if (cur < best) { best = cur; object = %2; }\n")
                 .arg(item->name()).arg(object);
         colorAt += QString("  if (object == %1) { return %2_colorAt(" COLORCALL "); }\n")
                 .arg(object).arg(item->name());
         ++object;
     }
-    distanceAt += "}\n";
+    distanceAt += "  return best;\n}\n";
     colorAt += "  return vec3(0);\n}\n";
 
     emitter(imports + distanceAt + colorAt);

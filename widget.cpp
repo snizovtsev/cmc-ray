@@ -35,6 +35,10 @@ void Widget::initializeGL()
 
     qDebug() << "Linking...";
     program->link();
+    if (!program->isLinked()) {
+        exit(1);
+    }
+
     program->bind();
 
     qDebug() << "Loading textures...";
@@ -63,8 +67,6 @@ void Widget::paintGL()
     static QTime perf;
     perf.start();
 
-    if (!program->isLinked())
-        this->close();
     glClear(GL_COLOR_BUFFER_BIT);
 
     QMatrix4x4 m;

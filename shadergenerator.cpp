@@ -11,5 +11,8 @@ ShaderGenerator::ShaderGenerator(const QString &fileName)
 
 void ShaderEmitter::operator ()(const QString& source) const
 {
-    m_program->addShaderFromSourceCode(QGLShader::Fragment, source);
+    if (!m_program->addShaderFromSourceCode(QGLShader::Fragment, source)) {
+        qDebug() << "Here is the source:";
+        qDebug("%s", qPrintable(source));
+    }
 }
