@@ -19,18 +19,20 @@ SOURCES += main.cpp\
     colormodel.cpp \
     xmlreader.cpp \
     xmlwriter.cpp \
-    interfaces.cpp
+    serialization.cpp \
+    shadergenerator.cpp
 
 HEADERS  += widget.h \
     scene.h \
-    interfaces.h \
+    serialization.h \
     shadercode.h \
     material.h \
     colormodel.h \
     item.h \
     fog.h \
     xmlreader.h \
-    xmlwriter.h
+    xmlwriter.h \
+    shadergenerator.h
 
 OTHER_FILES += scene.xml \
     main.vert \

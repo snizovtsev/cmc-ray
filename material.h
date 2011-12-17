@@ -3,7 +3,8 @@
 
 #include <QtCore>
 
-#include "interfaces.h"
+#include "serialization.h"
+#include "shadergenerator.h"
 #include "colormodel.h"
 
 class Material : public ShaderGenerator, public Serializable
@@ -17,7 +18,7 @@ public:
     ~Material();
 
     void serialize(Writer *writer) const;
-    void makeShaders(QGLShaderProgram *program);
+    void makeShaders(const ShaderEmitter &emitter);
 
     QString name() const { return m_name; }
 };

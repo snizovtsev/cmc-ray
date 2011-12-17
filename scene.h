@@ -3,7 +3,8 @@
 
 #include <QtOpenGL>
 
-#include "interfaces.h"
+#include "serialization.h"
+#include "shadergenerator.h"
 #include "shadercode.h"
 #include "material.h"
 #include "item.h"
@@ -23,7 +24,7 @@ public:
     ~Scene();
 
     void serialize(Writer *writer) const;
-    void makeShaders(QGLShaderProgram *program);
+    void makeShaders(const ShaderEmitter &emitter);
 };
 
 #endif // SCENE_H

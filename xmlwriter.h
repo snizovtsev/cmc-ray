@@ -3,7 +3,7 @@
 
 #include <QtCore>
 
-#include "interfaces.h"
+#include "serialization.h"
 
 class XMLWriter : public Writer
 {

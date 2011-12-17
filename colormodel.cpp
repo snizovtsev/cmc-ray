@@ -5,11 +5,11 @@ ColorModel::ColorModel()
     : ShaderGenerator(":/colormodel.frag")
 { }
 
-void ColorModel::makeShaders(QGLShaderProgram *program)
+void ColorModel::makeShaders(const ShaderEmitter &emitter)
 {
     static bool registerLibrary = true;
     if (registerLibrary) {
-        program->addShaderFromSourceCode(QGLShader::Fragment, shader);
+        emitter(shader);
         registerLibrary = false;
     }
 }
@@ -36,13 +36,12 @@ public:
         writer->leaveObject();
     }
 
-    void makeShaders(const QString& itemName, QGLShaderProgram *program) {
-        ColorModel::makeShaders(program);
-        const char* shader = "vec3 lambert(vec3 normal, vec3 light, vec3 color);"
-                             "vec3 %1_diffuse(" COLORSPEC ")"
-                             "{ return lambert(normal, light, %2); }";
-        program->addShaderFromSourceCode(QGLShader::Fragment,
-                                         QString(shader).arg(itemName, *color));
+    void makeShaders(const QString& itemName, const ShaderEmitter &emitter) {
+        ColorModel::makeShaders(emitter);
+        const char* shader = "vec3 lambert(vec3 normal, vec3 light, vec3 color);\n"
+                             "vec3 %1_diffuse(" COLORSPEC ")\n"
+                             "{ return lambert(normal, light, %2); }\n";
+        emitter(QString(shader).arg(itemName, *color));
     }
 };
 
@@ -84,13 +83,12 @@ public:
         writer->leaveObject();
     }
 
-    void makeShaders(const QString& itemName, QGLShaderProgram *program) {
-        ColorModel::makeShaders(program);
-        const char* shader = "vec3 phong(vec3 normal, vec3 view, vec3 color, float shininness);"
-                             "vec3 %1_specular(" COLORSPEC ")"
-                             "{ return phong(normal, view, %2, %3); }";
-        program->addShaderFromSourceCode(QGLShader::Fragment,
-                                         QString(shader).arg(itemName, *color, *shininess));
+    void makeShaders(const QString& itemName, const ShaderEmitter &emitter) {
+        ColorModel::makeShaders(emitter);
+        const char* shader = "vec3 phong(vec3 normal, vec3 view, vec3 color, float shininness);\n"
+                             "vec3 %1_specular(" COLORSPEC ")\n"
+                             "{ return phong(normal, view, %2, %3); }\n";
+        emitter(QString(shader).arg(itemName, *color, *shininess));
     }
 };
 

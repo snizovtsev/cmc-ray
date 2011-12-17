@@ -23,6 +23,16 @@ void Widget::initializeGL()
     program->addShaderFromSourceFile(QGLShader::Vertex, ":/main.vert");
     qDebug() << "Compiling fragment shaders...";
     scene.makeShaders(program);
+
+    QFile dumpFile("dump.frag");
+    dumpFile.open(QFile::WriteOnly);
+    QTextStream dump(&dumpFile);
+    foreach (QGLShader *shader, program->shaders()) {
+        dump << shader->sourceCode();
+        dump << "----------------------------------------\n";
+    }
+    dump.flush();
+
     qDebug() << "Linking...";
     program->link();
     program->bind();

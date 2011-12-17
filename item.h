@@ -1,7 +1,8 @@
 #ifndef ITEM_H
 #define ITEM_H
 
-#include "interfaces.h"
+#include "serialization.h"
+#include "shadergenerator.h"
 #include "shadercode.h"
 
 class Item: public ShaderGenerator, public Serializable
@@ -19,7 +20,7 @@ public:
     QString material() const { return m_material; }
 
     void serialize(Writer *writer) const;
-    void makeShaders(QGLShaderProgram *program);
+    void makeShaders(const ShaderEmitter &emitter);
 };
 
 #endif // ITEM_H

@@ -1,7 +1,8 @@
 #ifndef FOG_H
 #define FOG_H
 
-#include "interfaces.h"
+#include "serialization.h"
+#include "shadergenerator.h"
 #include "shadercode.h"
 
 class Fog: public ShaderGenerator, public Serializable
@@ -14,7 +15,7 @@ public:
     ~Fog();
 
     void serialize(Writer *writer) const;
-    void makeShaders(QGLShaderProgram *program);
+    void makeShaders(const ShaderEmitter &emitter);
 };
 
 #endif // FOG_H

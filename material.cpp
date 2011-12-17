@@ -43,14 +43,14 @@ void Material::serialize(Writer *writer) const
     writer->leaveObject();
 }
 
-void Material::makeShaders(QGLShaderProgram *program)
+void Material::makeShaders(const ShaderEmitter &emitter)
 {
-    diffuse->makeShaders(name(), program);
-    specular->makeShaders(name(), program);
+    diffuse->makeShaders(name(), emitter);
+    specular->makeShaders(name(), emitter);
 
     QString colorAt = QString("vec3 mat_%1_colorAt(" COLORSPEC ") {\n"
                               "  return %1_diffuse(" COLORCALL ") +"
                               "    %1_specular(" COLORCALL ");"
                               ).arg(name());
-    program->addShaderFromSourceCode(QGLShader::Fragment, colorAt);
+    emitter(colorAt);
 }

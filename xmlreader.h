@@ -1,7 +1,7 @@
 #ifndef XMLREADER_H
 #define XMLREADER_H
 
-#include "interfaces.h"
+#include "serialization.h"
 
 class XMLReader : public Reader
 {

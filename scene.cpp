@@ -71,11 +71,12 @@ void Scene::serialize(Writer *writer) const
     writer->leaveObject();
 }
 
-void Scene::makeShaders(QGLShaderProgram *program)
+void Scene::makeShaders(const ShaderEmitter &emitter)
 {
-    program->addShaderFromSourceCode(QGLShader::Fragment, shader.arg(*light));
+    fog->makeShaders(emitter);
+
     foreach_material(mat)
-        mat.value()->makeShaders(program);
+        mat.value()->makeShaders(emitter);
 
     QString imports;
     QString distanceAt =
@@ -86,7 +87,7 @@ void Scene::makeShaders(QGLShaderProgram *program)
 
     int object = 1;
     foreach (Item* item,  items) {
-        item->makeShaders(program);
+        item->makeShaders(emitter);
         imports += QString("float %1(vec3 p);\n").arg(item->name());
         distanceAt += QString("  if ((cur = %1(p)) < best) { best = cur; object = %2; }\n")
                 .arg(item->name()).arg(object);
@@ -97,5 +98,6 @@ void Scene::makeShaders(QGLShaderProgram *program)
     distanceAt += "}\n";
     colorAt += "  return vec3(0);\n}\n";
 
-    program->addShaderFromSourceCode(QGLShader::Fragment, imports + distanceAt + colorAt);
+    emitter(imports + distanceAt + colorAt);
+    emitter(shader.arg(*light));
 }

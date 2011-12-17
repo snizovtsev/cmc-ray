@@ -1,4 +1,4 @@
-#include "interfaces.h"
+#include "serialization.h"
 
 #ifdef Q_OS_LINUX
 #include "execinfo.h"
@@ -14,13 +14,6 @@ Serializable::Serializable(const QString &objectName, Reader *reader)
 bool Reader::hasChild()
 {
     return !child().isNull();
-}
-
-ShaderGenerator::ShaderGenerator(const QString &fileName)
-{
-    QFile data(fileName);
-    if (data.open(QFile::ReadOnly))
-        shader = QTextStream(&data).readAll();
 }
 
 SerializeException::SerializeException(QString what)

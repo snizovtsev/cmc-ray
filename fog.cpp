@@ -36,8 +36,7 @@ void Fog::serialize(Writer *writer) const
     writer->leaveObject();
 }
 
-void Fog::makeShaders(QGLShaderProgram *program)
+void Fog::makeShaders(const ShaderEmitter &emitter)
 {
-    program->addShaderFromSourceCode(QGLShader::Fragment,
-                                     shader.arg(*density, *color));
+    emitter(shader.arg(*density, *color));
 }

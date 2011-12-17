@@ -1,22 +1,7 @@
-#ifndef INTERFACES_H
-#define INTERFACES_H
+#ifndef SERIALIZATION_H
+#define SERIALIZATION_H
 
 #include <QtCore>
-#include <QtOpenGL>
-
-#define COLORSPEC "vec3 point, vec3 normal, vec3 view, vec3 light"
-#define COLORCALL "point, normal, view, light"
-
-class ShaderGenerator {
-protected:
-    QString shader;
-public:
-    ShaderGenerator() { }
-
-    explicit ShaderGenerator(const QString &fileName);
-    virtual void makeShaders(QGLShaderProgram* program) = 0;
-    virtual ~ShaderGenerator() { }
-};
 
 class Reader {
 public:
@@ -63,4 +48,4 @@ public:
     virtual void serialize(Writer* writer) const = 0;
 };
 
-#endif // INTERFACES_H
+#endif // SERIALIZATION_H
