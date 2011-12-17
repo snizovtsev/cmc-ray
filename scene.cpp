@@ -81,7 +81,8 @@ void Scene::makeShaders(const ShaderEmitter &emitter)
     QString imports;
     QString distanceAt =
             "float distanceAt(vec3 p, out int object) {\n"
-            "   float cur, best = 1e10;\n";
+            "   float cur, best = 1e10;\n"
+            "   object = -2; // noneObject\n";
     QString colorAt =
             "vec3 colorAt(int object," COLORSPEC ") {\n";
 
