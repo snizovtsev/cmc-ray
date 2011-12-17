@@ -8,6 +8,7 @@
 class XMLWriter : public Writer
 {
     QXmlStreamWriter* xml;
+    QFile file;
     QXmlStreamAttributes attr;
 
 public:

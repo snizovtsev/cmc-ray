@@ -1,12 +1,13 @@
 #include "xmlwriter.h"
 
 XMLWriter::XMLWriter(const QString &fileName)
+    : file(fileName)
 {
-    QFile file(fileName);
     if (!file.open(QFile::WriteOnly))
         throw SerializeException("Can't write to file");
 
     xml = new QXmlStreamWriter(&file);
+    xml->setAutoFormatting(true);
 }
 
 XMLWriter::~XMLWriter()
