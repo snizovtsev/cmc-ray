@@ -6,12 +6,15 @@ Material::Material(Reader *reader)
     : Serializable(objectName, reader)
 {
     diffuse = specular = 0;
+    m_name = reader->attrib("name");
 
     while (reader->hasChild()) {
-        if (!diffuse && reader->child() == "diffuse") {
+        QString child = reader->child();
+
+        if (!diffuse && child == "diffuse") {
             reader->handleObject();
             diffuse = ColorModel::createDiffuse(reader->attrib("model"), reader);
-        } else if (!specular && reader->child() == "specular") {
+        } else if (!specular && child == "specular") {
             reader->handleObject();
             specular = ColorModel::createSpecular(reader->attrib("model"), reader);
         } else {
@@ -22,7 +25,7 @@ Material::Material(Reader *reader)
     if (!diffuse || !specular)
         throw SerializeException("Both diffuse and specular models should be defined");
 
-    endReading(reader);
+    reader->endObject();
 }
 
 Material::~Material()

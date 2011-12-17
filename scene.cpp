@@ -14,20 +14,22 @@ Scene::Scene(Reader* reader)
     fog = 0;
 
     while (reader->hasChild()) {
-        if (reader->child() == "fog") {
+        QString child = reader->child();
+
+        if (child == "fog") {
             fog = new Fog(reader);
-        } else if (reader->child() == "light") {
+        } else if (child == "light") {
             light = new ShaderCode(reader);
-        } else if (reader->child() == "eye") {
+        } else if (child == "eye") {
             eye = new ShaderCode(reader);
-        } else if (reader->child() == "material") {
+        } else if (child == "material") {
             Material* mat = new Material(reader);
             if (material.contains(mat->name())) {
                 delete mat;
                 throw SerializeException("Material redeclaration");
             }
             material.insert(mat->name(), mat);
-        } else if (reader->child() == "item") {
+        } else if (child == "item") {
             items += new Item(reader);
         } else {
             throw SerializeException("Unexpected children");
@@ -37,7 +39,7 @@ Scene::Scene(Reader* reader)
     if (!fog || !light || !eye)
         throw SerializeException("Fog, light and eye are required");
 
-    endReading(reader);
+    reader->endObject();
 }
 
 Scene::~Scene()

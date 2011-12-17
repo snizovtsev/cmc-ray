@@ -13,71 +13,54 @@ protected:
 public:
     ShaderGenerator() { }
 
-    explicit ShaderGenerator(QString fileName) {
-        QFile data(fileName);
-        if (data.open(QFile::ReadOnly))
-            shader = QTextStream(&data).readAll();
-    }
-
+    explicit ShaderGenerator(const QString &fileName);
     virtual void makeShaders(QGLShaderProgram* program) = 0;
     virtual ~ShaderGenerator() { }
 };
 
 class Reader {
 public:
-    virtual const QString attrib(const QString& name) const = 0;
-    virtual const QString& text() const = 0;
+    virtual QString attrib(const QString& name) const = 0;
+    virtual QString text() const = 0;
 
     // Переходит к обработке объекта, заполняет attrib
     // Передвигает указатель дальше
     virtual QString handleObject() = 0;
+    // bla-bla-bla
+    virtual void endObject() = 0;
     // Пополняет text, пока не найдет ребенка.
     // После чего ожидается вызов handleObject
     // Повторный вызов ничего не меняет!
     virtual QString child() = 0;
     // Возвращает true, если в обрабатываемом объекте
     // ещё есть необработанные дочерние элементы
-    bool hasChild() {
-        return !child().isNull();
-    }
+    bool hasChild();
 };
 
 class Writer {
 public:
     virtual void enterObject(const QString& name) = 0;
-    virtual void pushAttribute(const QString& name, const QString& value);
+    virtual void pushAttribute(const QString& name, const QString& value) = 0;
     virtual void writeText(const QString& text) = 0;
     virtual void leaveObject() = 0;
 };
 
 class SerializeException: public std::exception {
-    const QString m_what;
+    QString m_what;
 public:
-    SerializeException(QString what) throw()
-        : std::exception(), m_what(what)
-    { }
-
+    SerializeException(QString what);
     ~SerializeException() throw() { }
 
-    const char* what() { return qPrintable(m_what); }
+    const char* what() const throw();
 };
 
 class Serializable {
 public:
     Serializable() { }
-
-    explicit Serializable(QString objectName, Reader* reader) {
-        if (reader->handleObject() != objectName)
-            throw SerializeException("Unexpected object");
-    }
-
-    void endReading(Reader* reader) {
-        if (reader->hasChild())
-            throw SerializeException("Extra children found");
-    }
+    explicit Serializable(const QString &objectName, Reader* reader);
+    virtual ~Serializable() { }
 
     virtual void serialize(Writer* writer) const = 0;
-    virtual ~Serializable() { }
 };
 
 #endif // INTERFACES_H

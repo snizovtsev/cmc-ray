@@ -22,7 +22,7 @@ public:
 
     explicit LambertModel(Reader *reader) {
         color = new ShaderCode("color", reader);
-        endReading(reader);
+        reader->endObject();
     }
 
     ~LambertModel() {
@@ -68,7 +68,7 @@ public:
         if (!color || !shininess)
             throw SerializeException("Color or shininess are not defined");
 
-        endReading(reader);
+        reader->endObject();
     }
 
     ~PhongModel() {

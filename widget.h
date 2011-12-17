@@ -5,6 +5,7 @@
 #include <QtOpenGL>
 
 #include "scene.h"
+#include "xmlreader.h"
 
 class Widget : public QGLWidget
 {
@@ -25,8 +26,8 @@ protected:
 
 private:
     QGLShaderProgram *program;
-    //XMLReader         reader;
-    //Scene             scene;
+    XMLReader         reader;
+    Scene             scene;
 
     GLfloat xRot, yRot, zRot;
     GLfloat xVel, yVel, zVel;

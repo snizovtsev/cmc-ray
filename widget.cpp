@@ -3,7 +3,7 @@
 Widget::Widget(QGLWidget *parent)
     : QGLWidget(QGLFormat(QGL::NoDepthBuffer | QGL::NoStencilBuffer | QGL::SampleBuffers), parent),
       program(0),
-      //reader("scene.xml"), scene(reader),
+      reader("scene.xml"), scene(&reader),
       xRot(0), yRot(0), zRot(0),
       xVel(0), yVel(0), zVel(0),
       zoom(1)
@@ -22,7 +22,7 @@ void Widget::initializeGL()
     qDebug() << "Compiling vertex shader...";
     program->addShaderFromSourceFile(QGLShader::Vertex, ":/main.vert");
     qDebug() << "Compiling fragment shaders...";
-    //scene.makeShaders(program);
+    scene.makeShaders(program);
     qDebug() << "Linking...";
     program->link();
     program->bind();

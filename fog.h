@@ -6,7 +6,7 @@
 
 class Fog: public ShaderGenerator, public Serializable
 {
-    ShaderCode* intensity;
+    ShaderCode* density;
     ShaderCode* color;
 
 public:

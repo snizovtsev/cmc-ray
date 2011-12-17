@@ -6,36 +6,38 @@ Fog::Fog(Reader *reader)
     : ShaderGenerator(":/fog.frag"),
       Serializable(objectName, reader)
 {
+    color = density = 0;
+
     while (reader->hasChild()) {
-        if (!intensity && reader->child() == "intensity")
-            intensity = new ShaderCode(reader);
+        if (!density && reader->child() == "density")
+            density = new ShaderCode(reader);
         else if (!color && reader->child() == "color")
             color = new ShaderCode(reader);
         else
             throw SerializeException("Unexpected element");
     }
 
-    if (!intensity || !color)
-        throw SerializeException("");
+    if (!density || !color)
+        throw SerializeException("Density and color should be defined for fog");
 
-    endReading(reader);
+    reader->endObject();
 }
 
 Fog::~Fog()
 {
-    delete intensity;
+    delete density;
     delete color;
 }
 
 void Fog::serialize(Writer *writer) const
 {
     writer->enterObject(objectName);
-    intensity->serialize(writer);
+    density->serialize(writer);
     writer->leaveObject();
 }
 
 void Fog::makeShaders(QGLShaderProgram *program)
 {
     program->addShaderFromSourceCode(QGLShader::Fragment,
-                                     shader.arg(*intensity, *color));
+                                     shader.arg(*density, *color));
 }

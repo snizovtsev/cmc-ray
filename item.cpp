@@ -6,9 +6,11 @@ Item::Item(Reader *reader)
     : Serializable(objectName, reader)
 {
     m_name = reader->attrib("name");
+    ambientOcclusion = 0;
+    softShadows = 0;
 
     while (reader->hasChild()) {
-        if (reader->child() == "code")
+        if (reader->child() == "shader")
             code = new ShaderCode(reader);
         else if (reader->child() == "ambientOcclusion")
             ambientOcclusion = new ShaderCode(reader);
@@ -17,13 +19,13 @@ Item::Item(Reader *reader)
         else if (reader->child() == "material") {
             reader->handleObject();
             m_material = reader->text();
-            endReading(reader);
+            reader->endObject();
         } else {
             throw SerializeException("Unexpected element: " + reader->child());
         }
     }
 
-    endReading(reader);
+    reader->endObject();
 }
 
 Item::~Item()

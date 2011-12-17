@@ -4,7 +4,7 @@ void ShaderCode::construct(Reader *reader)
 {
     objectName = reader->handleObject();
     code = reader->text();
-    endReading(reader);
+    reader->endObject();
 }
 
 ShaderCode::ShaderCode(Reader *reader)

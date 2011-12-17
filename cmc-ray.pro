@@ -16,7 +16,10 @@ SOURCES += main.cpp\
     material.cpp \
     item.cpp \
     fog.cpp \
-    colormodel.cpp
+    colormodel.cpp \
+    xmlreader.cpp \
+    xmlwriter.cpp \
+    interfaces.cpp
 
 HEADERS  += widget.h \
     scene.h \
@@ -25,7 +28,9 @@ HEADERS  += widget.h \
     material.h \
     colormodel.h \
     item.h \
-    fog.h
+    fog.h \
+    xmlreader.h \
+    xmlwriter.h
 
 OTHER_FILES += scene.xml \
     main.vert \
