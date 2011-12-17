@@ -77,6 +77,6 @@ void main(void)
 
     int object = trace(origin, dir, 150);
     vec3 color = colorAt(object, origin, normalAt(origin), -dir, LIGHT - origin);
-    color = applyFog(gl_FragColor.rgb, length(eyePos - origin));
+    color = applyFog(color, length(eyePos - origin));
     gl_FragColor = vec4(color, 1.0);
 }
