@@ -82,6 +82,15 @@
         <shader>float item_wall( vec3 p ) { return p.z + 15.0; }</shader>
         <material>wall</material>
     </item>
+    <item name="cube">
+        <shader>
+        vec3 udBox( vec3 p, vec3 b );
+        vec3 cube( vec3 p ) {
+            return udBox(p, vec3(2.0, 2.0, 2.0));
+        }
+        </shader>
+        <material>cube</material>
+    </item>
     <item name="julia">
         <shader>
         vec4 quatSq( vec4 q )
