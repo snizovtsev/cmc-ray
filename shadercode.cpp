@@ -3,6 +3,7 @@
 void ShaderCode::construct(Reader *reader)
 {
     objectName = reader->handleObject();
+    m_require = reader->attrib("require");
     code = reader->text();
     reader->endObject();
 }
@@ -28,6 +29,8 @@ ShaderCode::ShaderCode(QString name, Reader *reader)
 
 void ShaderCode::serialize(Writer *writer) const
 {
+    if (!m_require.isEmpty())
+        writer->pushAttribute("require", m_require);
     writer->enterObject(objectName);
     writer->writeText(code);
     writer->leaveObject();

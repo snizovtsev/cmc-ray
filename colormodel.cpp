@@ -41,7 +41,8 @@ public:
         const char* shader = "vec3 lambert(vec3 normal, vec3 light, vec3 color);\n"
                              "vec3 %1_diffuse(" COLORSPEC ")\n"
                              "{ return lambert(normal, light, %2); }\n";
-        emitter(QString(shader).arg(itemName, *color));
+        emitter(color->require() + "\n" +
+                QString(shader).arg(itemName, *color));
     }
 };
 
@@ -88,7 +89,8 @@ public:
         const char* shader = "vec3 phong(vec3 normal, vec3 view, vec3 color, float shininness);\n"
                              "vec3 %1_specular(" COLORSPEC ")\n"
                              "{ return phong(normal, view, %2, %3); }\n";
-        emitter(QString(shader).arg(itemName, *color, *shininess));
+        emitter(color->require() + shininess->require() + "\n" +
+                QString(shader).arg(itemName, *color, *shininess));
     }
 };
 

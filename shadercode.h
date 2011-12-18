@@ -9,6 +9,7 @@ class ShaderCode : public Serializable
 {
     QString objectName;
     QString code;
+    QString m_require;
 
     void construct(Reader* reader);
 public:
@@ -19,6 +20,7 @@ public:
     void serialize(Writer *writer) const;
 
     operator QString() { return code; }
+    QString require() const { return m_require; }
 };
 
 #endif // SHADERCODE_H
