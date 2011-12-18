@@ -25,8 +25,8 @@ vec3 refract_color(COLORCALL, float indexOfRefraction, int reflectLimit, int ref
 
     vec3 reflNormal = normalAt(reflPos);
     vec3 reflShift = reflPos - point;
-    vec3 reflView = reflShift - view;
-    vec3 reflLight = reflShift - light;
+    vec3 reflView = normalize(reflShift - view);
+    vec3 reflLight = normalize(reflShift - light);
     // FIXME: don't allow recursion
     cReflected = colorAt(reflObj, reflPos, reflNormal, reflView, reflLight);
 
@@ -61,8 +61,8 @@ vec3 refract_color(COLORCALL, float indexOfRefraction, int reflectLimit, int ref
     refrObj = trace(refrPos, refrDir, refractLimit);
     vec3 refrNormal = normalAt(refrPos);
     vec3 refrShift = refrPos - point;
-    vec3 refrView = refrShift - view;
-    vec3 refrLight = refrShift - light;
+    vec3 refrView = normalize(refrShift - view);
+    vec3 refrLight = normalize(refrShift - light);
     // FIXME: don't allow recursion
     cRefracted = colorAt(refrObj, refrPos, refrNormal, refrView, refrLight);
 

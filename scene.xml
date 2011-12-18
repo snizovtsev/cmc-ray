@@ -1,5 +1,5 @@
 <scene>
-    <light>vec3(1.0, 2.0, 3.0)</light>
+    <light>vec3(10.0, 10.0, 3.0)</light>
     <eye>vec3(0.0, 5.0, 12.0)</eye>
     <fog>
         <density>0.017</density>
@@ -9,7 +9,7 @@
     <material name="floor">
         <diffuse model="lambert">
             <color require="uniform sampler2D floorTex;">
-                texture2D(floorTex, point.xz / 10.0).rgb
+                texture2D(floorTex, point.xz / 10.0).rgb * 5.0
             </color>
         </diffuse>
         <specular model="phong">
@@ -20,7 +20,7 @@
     <material name="wall">
         <diffuse model="lambert">
             <color require="uniform sampler2D floorTex;">
-                texture2D(floorTex, point.xy / 10.0).rgb
+                texture2D(floorTex, point.xy / 10.0).rgb * 5.0
             </color>
         </diffuse>
         <specular model="phong">

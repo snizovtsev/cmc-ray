@@ -76,7 +76,7 @@ void main(void)
     vec3 dir = normalize(mat3(matrix) * vec3(aspectRatio * pixel.x, pixel.y, -1));
 
     int object = trace(origin, dir, 150);
-    vec3 color = colorAt(object, origin, normalAt(origin), -dir, LIGHT - origin);
+    vec3 color = colorAt(object, origin, normalAt(origin), -dir, normalize(LIGHT - origin));
     color = applyFog(color, length(eyePos - origin));
     gl_FragColor = vec4(color, 1.0);
 }
