@@ -15,6 +15,8 @@ class Material : public ShaderGenerator, public Serializable
     Refract*    refract;
     QString     m_name;
 
+    void colorAt(const ShaderEmitter &emitter, bool no_refract);
+
 public:
     explicit Material(Reader* reader);
     ~Material();

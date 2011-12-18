@@ -8,7 +8,7 @@
 class Refract: public ShaderGenerator, Serializable
 {
     QString m_id;
-    ShaderCode* factor;
+    ShaderCode* m_factor;
     ShaderCode* indexOfRefraction;
 
     int reflectLimit;
@@ -16,6 +16,8 @@ class Refract: public ShaderGenerator, Serializable
 public:
     explicit Refract(const QString &id, Reader* reader);
     ~Refract();
+
+    ShaderCode* factor() const { return m_factor; }
 
     void serialize(Writer *writer) const;
     void makeShaders(const ShaderEmitter &emitter);

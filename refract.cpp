@@ -5,20 +5,21 @@ const int defaultRefractLimit = 150;
 const int defaultReflectLimit = 150;
 
 Refract::Refract(const QString &id, Reader *reader)
-    : Serializable(objectName, reader),
+    : ShaderGenerator(":/refract.frag"),
+      Serializable(objectName, reader),
       m_id(id),
       reflectLimit(defaultReflectLimit),
       refractLimit(defaultRefractLimit)
 {
     indexOfRefraction = 0;
-    factor = 0;
+    m_factor = 0;
 
     while (reader->hasChild()) {
         QString child = reader->child();
         if (child == "indexOfRefraction") {
             indexOfRefraction = new ShaderCode(reader);
         } else if (child == "factor") {
-            factor = new ShaderCode(reader);
+            m_factor = new ShaderCode(reader);
         } else if (child == "reflectLimit") {
             reader->handleObject();
             bool ok; reflectLimit = reader->text().simplified().toInt(&ok);
@@ -36,7 +37,7 @@ Refract::Refract(const QString &id, Reader *reader)
         }
     }
 
-    if (!indexOfRefraction || !factor)
+    if (!indexOfRefraction || !m_factor)
         throw SerializeException("indexOfRefraction or factor is not defined");
 
     reader->endObject();
@@ -45,14 +46,14 @@ Refract::Refract(const QString &id, Reader *reader)
 Refract::~Refract()
 {
     delete indexOfRefraction;
-    delete factor;
+    delete m_factor;
 }
 
 void Refract::serialize(Writer *writer) const
 {
     writer->enterObject(objectName);
     indexOfRefraction->serialize(writer);
-    factor->serialize(writer);
+    m_factor->serialize(writer);
     if (reflectLimit != defaultReflectLimit) {
         writer->enterObject("reflectLimit");
         writer->writeText(QString::number(reflectLimit));
@@ -68,4 +69,17 @@ void Refract::serialize(Writer *writer) const
 
 void Refract::makeShaders(const ShaderEmitter &emitter)
 {
+    static bool libraryEmitted = false;
+    if (!libraryEmitted) {
+        emitter(shader);
+        libraryEmitted = true;
+    }
+
+    QString shader = "vec3 trace_refraction(COLORSPEC, float indexOfRefraction, int reflectLimit, int refractLimit);\n";
+    shader += QString(
+                "vec3 %1_refracted(COLORSPEC) {\n"
+                "  return trace_refraction(COLORCALL, %2, %3, %4);\n"
+                "}\n")
+            .arg(m_id, *indexOfRefraction, QString::number(reflectLimit), QString::number(refractLimit));
+    emitter(shader);
 }

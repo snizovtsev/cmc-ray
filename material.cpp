@@ -3,8 +3,7 @@
 const QString objectName = "material";
 
 Material::Material(Reader *reader)
-    : ShaderGenerator(":/refract.frag"),
-      Serializable(objectName, reader)
+    : Serializable(objectName, reader)
 {
     diffuse = specular = 0;
     refract = 0;
@@ -54,14 +53,29 @@ void Material::makeShaders(const ShaderEmitter &emitter)
 {
     diffuse->makeShaders(name(), emitter);
     specular->makeShaders(name(), emitter);
-    if (refract)
-        refract->makeShaders(emitter);
 
+    colorAt(emitter, false);
+    colorAt(emitter, true);
+}
+
+void Material::colorAt(const ShaderEmitter &emitter, bool no_refract) {
     QString colorAt = QString("vec3 %1_diffuse(COLORSPEC);\n"
                               "vec3 %1_specular(COLORSPEC);\n"
-                              "vec3 mat_%1_colorAt(COLORSPEC) {\n"
-                              "  return %1_diffuse(COLORCALL) +\n"
-                              "    %1_specular(COLORCALL);"
-                              "}\n").arg(name());
+                              "vec3 mat_%1_colorAt%2(COLORSPEC) {\n"
+                              "  vec3 cDiffuse = %1_diffuse(COLORCALL);\n")
+            .arg(name(), no_refract ? "_no_refract" : "");
+
+    if (refract && !no_refract) {
+        refract->makeShaders(emitter);
+        colorAt = QString("vec3 %1_refracted(COLORSPEC);\n")
+                .arg(name()) + colorAt;
+        colorAt +=    QString("  vec3 cRefracted = %1_refracted(COLORCALL);\n"
+                              "  cDiffuse = mix(cDiffuse, cRefracted, %2);\n")
+                .arg(name(), *refract->factor());
+    }
+
+    colorAt += QString("  return cDiffuse + %1_specular(COLORCALL);\n"
+                       "}\n")
+            .arg(name());
     emitter(colorAt);
 }

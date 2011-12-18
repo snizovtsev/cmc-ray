@@ -84,22 +84,23 @@ void Scene::makeShaders(const ShaderEmitter &emitter)
             "   float cur, best = 1e10;\n"
             "   object = -2; // noneObject\n";
     QString colorAt =
-            "vec3 colorAt(int object, COLORSPEC) {\n";
+            "vec3 colorAt%1(int object, COLORSPEC) {\n";
 
     int object = 1;
     foreach (Item* item,  items) {
         item->makeShaders(emitter);
         imports += QString("float %1(vec3 p);\n").arg(item->name());
-        imports += QString("vec3 %1_colorAt(COLORSPEC);\n").arg(item->name());
+        imports += QString("vec3 %1_colorAt%2(COLORSPEC);\n").arg(item->name(), "%1");
         distanceAt += QString("  cur = %1(p); if (cur < best) { best = cur; object = %2; }\n")
                 .arg(item->name()).arg(object);
-        colorAt += QString("  if (object == %1) { return %2_colorAt(COLORCALL); }\n")
-                .arg(object).arg(item->name());
+        colorAt += QString("  if (object == %1) { return %2_colorAt%3(COLORCALL); }\n")
+                .arg(QString::number(object), item->name(), "%1");
         ++object;
     }
     distanceAt += "  return best;\n}\n";
     colorAt += "  return vec3(0);\n}\n";
 
-    emitter(imports + distanceAt + colorAt);
+    emitter(imports.arg("") + imports.arg("_no_refract") + distanceAt +
+            colorAt.arg("") + colorAt.arg("_no_refract"));
     emitter(shader.arg(*light, *eye));
 }

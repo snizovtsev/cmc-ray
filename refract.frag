@@ -12,14 +12,16 @@ float fresnel(float VdotN, float eta)
 const float tracePrecision  = 0.005;
 int trace(inout vec3 origin, in vec3 dir, int maxIterations);
 vec3 normalAt(vec3 p);
-vec3 colorAt(int object, COLORSPEC);
+vec3 colorAt_no_refract(int object, COLORSPEC);
 float distanceAt(vec3 p, out int object);
 
-vec3 refract_color(COLORCALL, float indexOfRefraction, int reflectLimit, int refractLimit)
+vec3 trace_refraction(COLORSPEC, float indexOfRefraction, int reflectLimit, int refractLimit)
 {
+    int object;
+    distanceAt(point, object);
     vec3 cReflected, cRefracted;
 
-    vec3 reflDir = normalize(reflect(view, normal));
+    vec3 reflDir = normalize(reflect(-view, normal));
     vec3 reflPos = point + reflDir * (tracePrecision * 4.0);
     int reflObj = trace(reflPos, reflDir, reflectLimit);
 
@@ -28,11 +30,11 @@ vec3 refract_color(COLORCALL, float indexOfRefraction, int reflectLimit, int ref
     vec3 reflView = normalize(reflShift - view);
     vec3 reflLight = normalize(reflShift - light);
     // FIXME: don't allow recursion
-    cReflected = colorAt(reflObj, reflPos, reflNormal, reflView, reflLight);
+    cReflected = colorAt_no_refract(reflObj, reflPos, reflNormal, reflView, reflLight);
 
     // Now trace refraction inside object
     vec3 refrDir = normalize(refract(view, normal, indexOfRefraction));
-    vec3 refrPos = origin + refrDir * (tracePrecision * 2.0);
+    vec3 refrPos = point + refrDir * (tracePrecision * 2.0);
     int refrObj = object;
 
     int iteration = 0;
@@ -64,8 +66,9 @@ vec3 refract_color(COLORCALL, float indexOfRefraction, int reflectLimit, int ref
     vec3 refrView = normalize(refrShift - view);
     vec3 refrLight = normalize(refrShift - light);
     // FIXME: don't allow recursion
-    cRefracted = colorAt(refrObj, refrPos, refrNormal, refrView, refrLight);
+    cRefracted = colorAt_no_refract(refrObj, refrPos, refrNormal, refrView, refrLight);
 
-    float fFresnel = fresnel(dot(-view, normal), indexOfRefraction);
+    float fFresnel = fresnel(dot(view, normal), indexOfRefraction);
+
     return mix(cRefracted, cReflected, fFresnel);
 }
