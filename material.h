@@ -6,11 +6,13 @@
 #include "serialization.h"
 #include "shadergenerator.h"
 #include "colormodel.h"
+#include "refract.h"
 
 class Material : public ShaderGenerator, public Serializable
 {
     ColorModel* diffuse;
     ColorModel* specular;
+    Refract*    refract;
     QString     m_name;
 
 public:

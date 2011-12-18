@@ -3,9 +3,11 @@
 const QString objectName = "material";
 
 Material::Material(Reader *reader)
-    : Serializable(objectName, reader)
+    : ShaderGenerator(":/refract.frag"),
+      Serializable(objectName, reader)
 {
     diffuse = specular = 0;
+    refract = 0;
     m_name = reader->attrib("name");
 
     while (reader->hasChild()) {
@@ -17,6 +19,8 @@ Material::Material(Reader *reader)
         } else if (!specular && child == "specular") {
             reader->handleObject();
             specular = ColorModel::createSpecular(reader->attrib("model"), reader);
+        } else if (!refract && child == "refract") {
+            refract = new Refract(m_name, reader);
         } else {
             throw SerializeException("Unknown children");
         }
@@ -32,6 +36,7 @@ Material::~Material()
 {
     delete diffuse;
     delete specular;
+    delete refract;
 }
 
 void Material::serialize(Writer *writer) const
@@ -40,6 +45,8 @@ void Material::serialize(Writer *writer) const
     writer->enterObject(objectName);
     diffuse->serialize(writer);
     specular->serialize(writer);
+    if (refract)
+        refract->serialize(writer);
     writer->leaveObject();
 }
 
@@ -47,12 +54,14 @@ void Material::makeShaders(const ShaderEmitter &emitter)
 {
     diffuse->makeShaders(name(), emitter);
     specular->makeShaders(name(), emitter);
+    if (refract)
+        refract->makeShaders(emitter);
 
-    QString colorAt = QString("vec3 %1_diffuse(" COLORSPEC ");\n"
-                              "vec3 %1_specular(" COLORSPEC ");\n"
-                              "vec3 mat_%1_colorAt(" COLORSPEC ") {\n"
-                              "  return %1_diffuse(" COLORCALL ") +\n"
-                              "    %1_specular(" COLORCALL ");"
+    QString colorAt = QString("vec3 %1_diffuse(COLORSPEC);\n"
+                              "vec3 %1_specular(COLORSPEC);\n"
+                              "vec3 mat_%1_colorAt(COLORSPEC) {\n"
+                              "  return %1_diffuse(COLORCALL) +\n"
+                              "    %1_specular(COLORCALL);"
                               "}\n").arg(name());
     emitter(colorAt);
 }

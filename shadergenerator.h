@@ -3,9 +3,6 @@
 
 class QGLShaderProgram;
 
-#define COLORSPEC "vec3 point, vec3 normal, vec3 view, vec3 light"
-#define COLORCALL "point, normal, view, light"
-
 class ShaderEmitter {
     QGLShaderProgram *m_program;
 public:

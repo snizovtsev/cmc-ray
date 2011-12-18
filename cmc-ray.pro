@@ -20,7 +20,8 @@ SOURCES += main.cpp\
     xmlreader.cpp \
     xmlwriter.cpp \
     serialization.cpp \
-    shadergenerator.cpp
+    shadergenerator.cpp \
+    refract.cpp
 
 HEADERS  += widget.h \
     scene.h \
@@ -32,14 +33,16 @@ HEADERS  += widget.h \
     fog.h \
     xmlreader.h \
     xmlwriter.h \
-    shadergenerator.h
+    shadergenerator.h \
+    refract.h
 
 OTHER_FILES += scene.xml \
     main.vert \
     fog.frag \
     scene.frag \
     colormodel.frag \
-    item.frag
+    item.frag \
+    refract.frag
 
 RESOURCES += \
     resources.qrc

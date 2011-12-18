@@ -84,16 +84,16 @@ void Scene::makeShaders(const ShaderEmitter &emitter)
             "   float cur, best = 1e10;\n"
             "   object = -2; // noneObject\n";
     QString colorAt =
-            "vec3 colorAt(int object," COLORSPEC ") {\n";
+            "vec3 colorAt(int object, COLORSPEC) {\n";
 
     int object = 1;
     foreach (Item* item,  items) {
         item->makeShaders(emitter);
         imports += QString("float %1(vec3 p);\n").arg(item->name());
-        imports += QString("vec3 %1_colorAt(" COLORSPEC ");\n").arg(item->name());
+        imports += QString("vec3 %1_colorAt(COLORSPEC);\n").arg(item->name());
         distanceAt += QString("  cur = %1(p); if (cur < best) { best = cur; object = %2; }\n")
                 .arg(item->name()).arg(object);
-        colorAt += QString("  if (object == %1) { return %2_colorAt(" COLORCALL "); }\n")
+        colorAt += QString("  if (object == %1) { return %2_colorAt(COLORCALL); }\n")
                 .arg(object).arg(item->name());
         ++object;
     }

@@ -26,7 +26,7 @@ const int       noneObject      = -2;
 //
 
 float distanceAt(vec3 p, out int object);
-vec3 colorAt(int object, vec3 point, vec3 normal, vec3 view, vec3 light);
+vec3 colorAt(int object, COLORSPEC);
 vec3 applyFog(vec3 color, float distance);
 
 //

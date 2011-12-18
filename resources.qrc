@@ -6,5 +6,6 @@
         <file>scene.frag</file>
         <file>colormodel.frag</file>
         <file>item.frag</file>
+        <file>refract.frag</file>
     </qresource>
 </RCC>
