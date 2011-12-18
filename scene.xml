@@ -84,8 +84,8 @@
     </item>
     <item name="cube">
         <shader>
-        vec3 udBox( vec3 p, vec3 b );
-        vec3 cube( vec3 p ) {
+        float udBox( vec3 p, vec3 b );
+        float cube( vec3 p ) {
             return udBox(p, vec3(2.0, 2.0, 2.0));
         }
         </shader>
