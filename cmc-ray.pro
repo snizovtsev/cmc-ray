@@ -38,7 +38,8 @@ OTHER_FILES += scene.xml \
     main.vert \
     fog.frag \
     scene.frag \
-    colormodel.frag
+    colormodel.frag \
+    item.frag
 
 RESOURCES += \
     resources.qrc

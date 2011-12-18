@@ -12,6 +12,7 @@ class ShaderCode : public Serializable
 
     void construct(Reader* reader);
 public:
+    explicit ShaderCode(const QString &_objectName, const QString &_code);
     explicit ShaderCode(Reader* reader);
     ShaderCode(QString name, Reader *reader);
 

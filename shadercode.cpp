@@ -7,6 +7,10 @@ void ShaderCode::construct(Reader *reader)
     reader->endObject();
 }
 
+ShaderCode::ShaderCode(const QString &_objectName, const QString &_code)
+    : objectName(_objectName), code(_code)
+{ }
+
 ShaderCode::ShaderCode(Reader *reader)
 {
     construct(reader);

@@ -10,8 +10,7 @@ class Item: public ShaderGenerator, public Serializable
     QString       m_name;
     ShaderCode*   code;
     QString       m_material;
-    ShaderCode*   ambientOcclusion;
-    ShaderCode*   softShadows;
+    ShaderCode*   shadowForce;
 public:
     explicit Item(Reader* reader);
     ~Item();

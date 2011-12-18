@@ -1,7 +1,7 @@
 #version 120
 
-#define LIGHT %1
-#define EYE %2
+#define LIGHT (%1)
+#define EYE (%2)
 
 //
 // Uniforms
