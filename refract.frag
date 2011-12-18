@@ -29,7 +29,6 @@ vec3 trace_refraction(COLORSPEC, float indexOfRefraction, int reflectLimit, int 
     vec3 reflShift = reflPos - point;
     vec3 reflView = normalize(reflShift - view);
     vec3 reflLight = normalize(reflShift - light);
-    // FIXME: don't allow recursion
     cReflected = colorAt_no_refract(reflObj, reflPos, reflNormal, reflView, reflLight);
 
     // Now trace refraction inside object
@@ -65,7 +64,6 @@ vec3 trace_refraction(COLORSPEC, float indexOfRefraction, int reflectLimit, int 
     vec3 refrShift = refrPos - point;
     vec3 refrView = normalize(refrShift - view);
     vec3 refrLight = normalize(refrShift - light);
-    // FIXME: don't allow recursion
     cRefracted = colorAt_no_refract(refrObj, refrPos, refrNormal, refrView, refrLight);
 
     float fFresnel = fresnel(dot(view, normal), indexOfRefraction);
