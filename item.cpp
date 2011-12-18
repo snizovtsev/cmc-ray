@@ -16,7 +16,7 @@ Item::Item(Reader *reader)
             shadowForce = new ShaderCode(reader);
         else if (reader->child() == "material") {
             reader->handleObject();
-            m_material = reader->text();
+            m_material = reader->text().simplified();
             reader->endObject();
         } else {
             throw SerializeException("Unexpected element: " + reader->child());
