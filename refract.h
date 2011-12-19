@@ -5,7 +5,7 @@
 #include "shadergenerator.h"
 #include "shadercode.h"
 
-class Refract: public ShaderGenerator, Serializable
+class Refract: public ShaderGenerator, public Serializable
 {
     QString m_id;
     ShaderCode* m_factor;
