@@ -14,17 +14,27 @@ void ColorModel::makeShaders(const ShaderEmitter &emitter)
     }
 }
 
+/**
+  @class LambertModel
+  Реализует модель Ламберта для диффузного света.
+  */
 class LambertModel: public ColorModel
 {
+    /// Основной цвет.
+    /// Шейдерное выражение типа <b>vec3</b>
     ShaderCode* color;
 public:
+    /// Имя модели.
     static QString modelName() { return "lambert"; }
 
+    /// Создаёт модель сериализацией
+    /// @param reader - сериализатор.
     explicit LambertModel(Reader *reader) {
         color = new ShaderCode("color", reader);
         reader->endObject();
     }
 
+    /// Виртуальный деструктор.
     ~LambertModel() {
         delete color;
     }
@@ -36,23 +46,34 @@ public:
         writer->leaveObject();
     }
 
-    void makeShaders(const QString& itemName, const ShaderEmitter &emitter) {
+    void makeShaders(const QString& matName, const ShaderEmitter &emitter) {
         ColorModel::makeShaders(emitter);
         const char* shader = "vec3 lambert(vec3 normal, vec3 light, vec3 color);\n"
                              "vec3 %1_diffuse(COLORSPEC)\n"
                              "{ return lambert(normal, light, %2); }\n";
         emitter(color->require() + "\n" +
-                QString(shader).arg(itemName, *color));
+                QString(shader).arg(matName, *color));
     }
 };
 
+/**
+  @class PhongModel
+  Реализует модель Фонга для бликового света.
+  */
 class PhongModel: public ColorModel
 {
+    /// Цвет блика.
+    /// Шейдерное выражение типа <b>vec3</b>
     ShaderCode* color;
+    /// Сила бликов.
+    /// Шейдерное выражение типа <b>float</b>
     ShaderCode* shininess;
 public:
+    /// Имя модели.
     static QString modelName() { return "phong"; }
 
+    /// Создаёт модель сериализацией.
+    /// @param reader - сериализатор.
     explicit PhongModel(Reader *reader) {
         color = shininess = 0;
 
@@ -84,13 +105,13 @@ public:
         writer->leaveObject();
     }
 
-    void makeShaders(const QString& itemName, const ShaderEmitter &emitter) {
+    void makeShaders(const QString& matName, const ShaderEmitter &emitter) {
         ColorModel::makeShaders(emitter);
         const char* shader = "vec3 phong(vec3 normal, vec3 view, vec3 color, float shininness);\n"
                              "vec3 %1_specular(COLORSPEC)\n"
                              "{ return phong(normal, view, %2, %3); }\n";
         emitter(color->require() + shininess->require() + "\n" +
-                QString(shader).arg(itemName, *color, *shininess));
+                QString(shader).arg(matName, *color, *shininess));
     }
 };
 

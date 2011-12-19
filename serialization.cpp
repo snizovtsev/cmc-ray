@@ -16,7 +16,7 @@ bool Reader::hasChild()
     return !child().isNull();
 }
 
-SerializeException::SerializeException(QString what)
+SerializeException::SerializeException(const QString &what)
     : m_what(what)
 {
 #if 0 //Q_OS_LINUX
