@@ -1,4 +1,5 @@
 #include "widget.h"
+#include "xmlwriter.h"
 
 Widget::Widget(QGLWidget *parent)
     : QGLWidget(QGLFormat(QGL::NoDepthBuffer | QGL::NoStencilBuffer | QGL::SampleBuffers), parent),
@@ -13,7 +14,6 @@ Widget::Widget(QGLWidget *parent)
 
 Widget::~Widget()
 {
-
 }
 
 void Widget::initializeGL()
@@ -24,7 +24,7 @@ void Widget::initializeGL()
     qDebug() << "Compiling fragment shaders...";
     scene.makeShaders(program);
 
-    QFile dumpFile("dump.frag");
+    QFile dumpFile("test/dump.frag");
     dumpFile.open(QFile::WriteOnly);
     QTextStream dump(&dumpFile);
     foreach (QGLShader *shader, program->shaders()) {

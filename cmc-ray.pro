@@ -21,7 +21,9 @@ SOURCES += main.cpp\
     xmlwriter.cpp \
     serialization.cpp \
     shadergenerator.cpp \
-    refract.cpp
+    refract.cpp \
+    binaryreader.cpp \
+    binarywriter.cpp
 
 HEADERS  += widget.h \
     scene.h \
@@ -34,7 +36,9 @@ HEADERS  += widget.h \
     xmlreader.h \
     xmlwriter.h \
     shadergenerator.h \
-    refract.h
+    refract.h \
+    binaryreader.h \
+    binarywriter.h
 
 OTHER_FILES += scene.xml \
     main.vert \

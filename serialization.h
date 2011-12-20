@@ -59,6 +59,9 @@ public:
     /// @return true, если есть необработанные дочерние объекты,
     ///   false иначе.
     bool hasChild();
+
+    /// Виртуальный деструктор
+    virtual ~Reader() { }
 };
 
 /**
@@ -73,14 +76,20 @@ public:
     /// Аттрибуты задаются перед вызовом enterObject() методом pushAttribute().
     /// @param name - имя сериализуемого объекта
     virtual void enterObject(const QString& name) = 0;
+
     /// Создаёт аттрибут.
     /// @param name - имя аттрибута.
     /// @param value - значение аттрибута.
     virtual void pushAttribute(const QString& name, const QString& value) = 0;
+
     /// Выводит текст текущего объекта.
     virtual void writeText(const QString& text) = 0;
+
     /// Завершает сериализацию объекта.
     virtual void leaveObject() = 0;
+
+    /// Виртуальный деструктор
+    virtual ~Writer() { }
 };
 
 /**

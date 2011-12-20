@@ -29,8 +29,33 @@
 #include <QtGui/QApplication>
 #include "widget.h"
 
+#include "xmlreader.h"
+#include "xmlwriter.h"
+#include "binaryreader.h"
+#include "binarywriter.h"
+
+static void testSerialization()
+{
+    XMLReader xml_in("scene.xml");
+    Scene scene1(&xml_in);
+
+    {XMLWriter xml_out1("test/scene-out1.xml");
+    scene1.serialize(&xml_out1);}
+
+    {BinaryWriter bin_out("test/scene.bin");
+    scene1.serialize(&bin_out);}
+
+    BinaryReader bin_in("test/scene.bin");
+    Scene scene2(&bin_in);
+
+    {XMLWriter xml_out2("test/scene-out2.xml");
+    scene2.serialize(&xml_out2);}
+}
+
 int main(int argc, char *argv[])
 {
+    testSerialization();
+
     QApplication a(argc, argv);
     Widget w;
     w.show();
