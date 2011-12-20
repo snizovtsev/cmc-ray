@@ -33,6 +33,7 @@ void Fog::serialize(Writer *writer) const
 {
     writer->enterObject(objectName);
     density->serialize(writer);
+    color->serialize(writer);
     writer->leaveObject();
 }
 
